@@ -37,3 +37,11 @@ jobs:
           --region=us-west1
           --source=.
           --allow-unauthenticated
+          --set-env-vars DATABASE_HOST=${{ secrets.DATABASE_HOST }}
+          --set-env-vars DATABASE_NAME=${{ secrets.DATABASE_NAME }}
+          --set-env-vars DATABASE_USER=${{ secrets.DATABASE_USER }}
+          --set-env-vars DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
+          --set-build-env-vars DATABASE_HOST=${{ secrets.DATABASE_HOST }}
+          --set-build-env-vars DATABASE_NAME=${{ secrets.DATABASE_NAME }}
+          --set-build-env-vars DATABASE_USER=${{ secrets.DATABASE_USER }}
+          --set-build-env-vars DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}

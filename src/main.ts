@@ -1,4 +1,5 @@
 import { Request, Response, http } from '@google-cloud/functions-framework';
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -17,11 +18,12 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter({ trustProxy: true }),
   );
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
   return app.init();
 }
 
 if (!isOnGoogleCloud) {
-  const port = Number(process.env.PORT) || 3001;
+  const port = Number(process.env.PORT) || 4000;
   nestApp = await bootstrap();
   await nestApp.listen(port, '0.0.0.0');
   console.log(`Listening on ${await nestApp.getUrl()}`);
