@@ -7,6 +7,11 @@ import ArticleDto from './dto/article.dto.js';
 export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
 
+  @Post()
+  create(@Body() data: ArticleDto) {
+    return this.articlesService.create(data);
+  }
+
   @Get()
   getAll() {
     return this.articlesService.getAll();
@@ -15,11 +20,6 @@ export class ArticlesController {
   @Get(':id')
   getById(@Param() { id }: FindOneParams) {
     return this.articlesService.getById(id);
-  }
-
-  @Post()
-  create(@Body() data: ArticleDto) {
-    return this.articlesService.create(data);
   }
 
   @Put(':id')

@@ -1,4 +1,4 @@
-import { Request, Response, http } from '@google-cloud/functions-framework';
+import { http } from '@google-cloud/functions-framework';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
@@ -7,31 +7,28 @@ import {
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module.js';
 
-let nestApp: NestFastifyApplication;
-// https://cloud.google.com/functions/docs/configuring/env-var#newer_runtimes
-const isOnGoogleCloud = Boolean(
-  process.env.K_SERVICE && process.env.K_REVISION,
-);
+let fastifyInstance;
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter({ trustProxy: true }),
   );
-  app.useGlobalPipes(new ValidationPipe({ transform: true }));
-  return app.init();
-}
+  app.useGlobalPipes(new ValidationPipe());
+  await app.init();
 
-if (!isOnGoogleCloud) {
-  const port = Number(process.env.PORT) || 4000;
-  nestApp = await bootstrap();
-  await nestApp.listen(port, '0.0.0.0');
-  console.log(`Listening on ${await nestApp.getUrl()}`);
-}
+  fastifyInstance = app.getHttpAdapter().getInstance();
 
-http('api', async (req: Request, res: Response) => {
-  nestApp = nestApp ?? (await bootstrap());
-  const fastifyInstance = nestApp.getHttpAdapter().getInstance();
+  // https://github.com/fastify/fastify/issues/946#issuecomment-766319521
+  fastifyInstance.removeAllContentTypeParsers();
+  fastifyInstance.addContentTypeParser('*', function (request, payload, done) {
+    done(null, (payload as any).body);
+  });
+
   await fastifyInstance.ready();
+}
+
+http('api', async (req, res) => {
+  if (!fastifyInstance) await bootstrap();
   fastifyInstance.server.emit('request', req, res);
 });
