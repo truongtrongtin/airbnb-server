@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import FindOneParams from '../utils/findOneParams.js';
 import { ArticlesService } from './articles.service.js';
 import ArticleDto from './dto/article.dto.js';
@@ -25,5 +33,10 @@ export class ArticlesController {
   @Put(':id')
   update(@Param() { id }: FindOneParams, @Body() data: ArticleDto) {
     return this.articlesService.update(id, data);
+  }
+
+  @Delete(':id')
+  delete(@Param() { id }: FindOneParams) {
+    return this.articlesService.delete(id);
   }
 }

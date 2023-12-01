@@ -52,4 +52,13 @@ export class ArticlesRepository {
 
     return databaseResponse;
   }
+
+  async delete(id: string) {
+    const databaseResponse = await this.database
+      .deleteFrom('article')
+      .where('id', '=', id)
+      .executeTakeFirst();
+
+    return databaseResponse;
+  }
 }

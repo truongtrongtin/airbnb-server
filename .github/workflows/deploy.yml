@@ -17,7 +17,7 @@ jobs:
 
       - id: auth
         name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v1
+        uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: projects/96573011708/locations/global/workloadIdentityPools/gh-pool/providers/gh-provider
           service_account: github-actions-service-account@my-project-1540367072726.iam.gserviceaccount.com
@@ -37,11 +37,11 @@ jobs:
           --region=us-west1
           --source=.
           --allow-unauthenticated
-          --set-env-vars DATABASE_HOST=${{ secrets.DATABASE_HOST }}
-          --set-env-vars DATABASE_NAME=${{ secrets.DATABASE_NAME }}
-          --set-env-vars DATABASE_USER=${{ secrets.DATABASE_USER }}
-          --set-env-vars DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
           --set-build-env-vars DATABASE_HOST=${{ secrets.DATABASE_HOST }}
           --set-build-env-vars DATABASE_NAME=${{ secrets.DATABASE_NAME }}
           --set-build-env-vars DATABASE_USER=${{ secrets.DATABASE_USER }}
           --set-build-env-vars DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
+          --set-env-vars DATABASE_HOST=${{ secrets.DATABASE_HOST }}
+          --set-env-vars DATABASE_NAME=${{ secrets.DATABASE_NAME }}
+          --set-env-vars DATABASE_USER=${{ secrets.DATABASE_USER }}
+          --set-env-vars DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}

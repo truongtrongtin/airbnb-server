@@ -33,4 +33,8 @@ export class ArticlesService {
 
     return article;
   }
+
+  async delete(id: string) {
+    await this.articlesRepository.delete(id);
+  }
 }

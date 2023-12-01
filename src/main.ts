@@ -22,7 +22,7 @@ async function bootstrap() {
   // https://github.com/fastify/fastify/issues/946#issuecomment-766319521
   fastifyInstance.removeAllContentTypeParsers();
   fastifyInstance.addContentTypeParser('*', function (request, payload, done) {
-    done(null, (payload as any).body);
+    done(null, payload.body);
   });
 
   await fastifyInstance.ready();

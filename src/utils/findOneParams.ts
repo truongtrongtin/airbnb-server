@@ -1,8 +1,7 @@
-import { IsNumber, IsString } from 'class-validator';
-import { Transform } from 'class-transformer';
+import { IsUUID } from 'class-validator';
 
 class FindOneParams {
-  @IsString()
+  @IsUUID()
   id: string;
 }
 
